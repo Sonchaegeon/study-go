@@ -1,13 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
+
+func multiply(a, b int) int {
+	return a * b
+}
+
+func lenAndUpper(name string) (int, string) {
+	return len(name), strings.ToUpper(name)
+}
+
+func repeatMe(words ...string) {
+	fmt.Println(words)
+}
 
 func main() {
-	const name string = "손채건"
-	// name = "qweqwe" -> error!
-	var age int = 17
-	autoType := false
-	age++
-	fmt.Println(age)
-	fmt.Println(autoType)
+	totalLength, upperName := lenAndUpper("sonchaegeon")
+	fmt.Println(multiply(2, 4))
+	fmt.Println(totalLength, upperName)
+	repeatMe("son", "go", "park", "lee", "kim")
 }
