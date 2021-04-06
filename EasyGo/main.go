@@ -1,12 +1,13 @@
 package main
 
-import (
-	"fmt"
-	"study-go/EasyGo/something"
-)
+import "fmt"
 
 func main() {
-	fmt.Println("hello world")
-	something.SayHello()
-	something.sayBye() // error
+	const name string = "손채건"
+	// name = "qweqwe" -> error!
+	var age int = 17
+	autoType := false
+	age++
+	fmt.Println(age)
+	fmt.Println(autoType)
 }
