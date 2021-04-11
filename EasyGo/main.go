@@ -3,7 +3,10 @@ package main
 import "fmt"
 
 func main() {
-	names := []string{"kim", "lee", "son"}
-	names = append(names, "park")
-	fmt.Println(names)
+	scg := map[string]string{"name": "sonchaegeon", "age": "18"}
+	fmt.Println("name: " + scg["name"] + " age: " + scg["age"])
+
+	for _, value := range scg {
+		fmt.Println(value)
+	}
 }
