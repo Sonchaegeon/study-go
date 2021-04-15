@@ -1,19 +1,33 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"study-go/EasyGo/myDict"
+	"net/http"
 )
 
+var errRequestFailed = errors.New("Request failed")
+
 func main() {
-	dictionary := myDict.Dictionary{"first": "First word"}
-	baseWord := "hello"
-	dictionary.Add(baseWord, "First")
-	dictionary.Search(baseWord)
-	dictionary.Delete(baseWord)
-	word, err := dictionary.Search(baseWord)
-	if err != nil {
-		fmt.Println(err)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://soundcloud.com/",
+		"https://www.facebook.com/",
+		"https://www.instagram.com/",
 	}
-	fmt.Println(word)
+	for _, url := range urls {
+		hitURL(url)
+	}
+}
+
+func hitURL(url string) error {
+	fmt.Println("Checking: " + url)
+	res, err := http.Get(url)
+	if err == nil || res.StatusCode >= 400 {
+		return errRequestFailed
+	}
+	return nil;
 }
