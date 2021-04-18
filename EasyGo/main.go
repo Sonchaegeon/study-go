@@ -1,23 +1,49 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"time"
+	"net/http"
 )
 
+type requestResult struct {
+	url    string
+	status string
+}
+
+var errRequestFailed = errors.New("Request failed")
+
 func main() {
-	c := make(chan string)
-	people := [5]string{"son", "chae", "geon", "go", "backend"}
-	for _, person := range people {
-		go isSexy(person, c)
+	results := make(map[string]string)
+	c := make(chan requestResult)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://www.facebook.com/",
+		"https://www.instagram.com/",
 	}
-	fmt.Println("Waiting for messages...")
-	for i := 0; i < len(people); i++ {
-		fmt.Println(<-c)
+
+	for _, url := range urls {
+		go hitURL(url, c)
+	}
+
+	for i := 0; i < len(urls); i++ {
+		result := <-c
+		results[result.url] = result.status
+	}
+
+	for url, status := range results {
+		fmt.Println(url, status)
 	}
 }
 
-func isSexy(person string, c chan string) {
-	time.Sleep(time.Second * 10)
-	c <- person + " is sexy"
+func hitURL(url string, c chan<- requestResult) {
+	res, err := http.Get(url)
+	status := "OK"
+	if err != nil || res.StatusCode >= 400 {
+		status = "FAILED"
+	}
+	c <- requestResult{url: url, status: status}
 }
